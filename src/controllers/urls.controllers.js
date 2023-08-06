@@ -18,3 +18,14 @@ export async function shortenUrl(req, res) {
         res.status(500).send(err.message);
     }
 }
+
+export async function getUrlById(req, res) {
+    try {
+        const { id } = req.params;
+        const user = await db.query(`SELECT * FROM users WHERE id=$1;`, [id]);
+        if (user.rowCount === 0) return res.sendStatus(404);
+        res.send(user.rows[0]);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+}
