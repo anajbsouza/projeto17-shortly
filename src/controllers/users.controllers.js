@@ -1,43 +1,38 @@
-import bcrypt from "bcrypt";
-import { v4 as uuid } from 'uuid';
-import { db } from "../database/database.connection.js";
+import { db } from "../database/database.connection.js"; 
 
-export async function signup(req, res) {
-    const { name, email, password, confirmPassword } = req.body;
-    
-    if (password !== confirmPassword) {
-        return res.status(422).send("As senhas não coincidem");
-    }
+export async function getCurrentUser(req, res) {
+    const { userId } = res.locals;
 
     try {
-        const { rows } = await db.query("SELECT * FROM users WHERE email = $1", [email]);
-        const user = rows[0];
-        if (user) return res.status(409).send("E-mail já cadastrado");
-
-        const hash = bcrypt.hashSync(password, 10);
-
-        await db.query("INSERT INTO users (name, email, password) VALUES ($1, $2, $3)", [name, email, hash]);
-        res.sendStatus(201);
-    } catch(err) {
+        const { rows: [user] } = await db.query(`
+            SELECT users.id, users.name, SUM(urls."visitCount") AS "visitCount", 
+                    JSON_AGG(
+                        JSON_BUILD_OBJECT('id', urls.id, 'url', urls.url, 'shortUrl', urls."shortUrl", 'visitCount', urls."visitCount")
+                    ) AS "shortenedUrls"
+                FROM users 
+                JOIN urls ON users.id = urls."userId"
+                WHERE users.id=$1
+                GROUP BY users.id, users.name;`,
+            [userId]
+        );
+        res.send(user);
+    } catch (err) {
         res.status(500).send(err.message);
     }
 }
 
-export async function login(req, res) {
-    const { email, password } = req.body;
-
+export async function getUserRanking(req, res) {
     try {
-        const { rows } = await db.query("SELECT * FROM users WHERE email = $1", [email]);
-        const user = rows[0];
-        if (!user) return res.status(401).send("E-mail não cadastrado");
-
-        const correctPassword = bcrypt.compareSync(password, user.password);
-        if (!correctPassword) return res.status(401).send("Senha incorreta");
-
-        const token = uuid();
-        await db.query("INSERT INTO sessions (token, userId) VALUES ($1, $2)", [token, user.id])
-        res.send({token});
-    } catch(err) {
+        const { rows: ranking } = await db.query(`
+            SELECT users.id, users.name, COUNT(urls.id) "linksCount", COALESCE(SUM(urls."visitCount"), 0) AS "visitCount"
+                FROM users 
+                LEFT JOIN urls ON users.id = urls."userId"
+                GROUP BY users.id, users.name
+                ORDER BY "visitCount" DESC, "linksCount" DESC
+                LIMIT 10;
+        `);
+        res.send(ranking);
+    } catch (err) {
         res.status(500).send(err.message);
     }
 }

@@ -1,11 +1,10 @@
-import { Router } from "express";
-import { login, signup } from "../controllers/users.controllers.js";
-import { schemaValidation } from "../middlewares/schemaValidation.middleware.js";
-import { schemaUsers, schemaLogin } from "../schemas/users.schema.js";
+import { Router } from "express"
+import { getCurrentUser, getUserRanking } from "../controllers/users.controllers.js"
+import { userValidation } from "../middlewares/userValidation.middleware.js"
 
-const userRouter = Router();
+const userRouter = Router()
 
-userRouter.post("/signup", schemaValidation(schemaUsers), signup);   
-userRouter.post("/login", schemaValidation(schemaLogin), login);
+userRouter.get("/users/me", userValidation, getCurrentUser)
+userRouter.get("/ranking", getUserRanking)
 
-export default userRouter;
+export default userRouter
