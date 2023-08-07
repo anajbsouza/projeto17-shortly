@@ -7,4 +7,4 @@ const userRouter = Router()
 userRouter.get("/users/me", userValidation, getCurrentUser)
 userRouter.get("/ranking", getUserRanking)
 
-export default userRouter
+export default userRouter;

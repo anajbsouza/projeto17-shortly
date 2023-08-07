@@ -29,7 +29,7 @@ export async function login(req, res) {
     const { email, password } = req.body;
 
     try {
-        const { rows } = await db.query("SELECT * FROM users WHERE email = $1", [email]);
+        const user = await db.query("SELECT * FROM sessions WHERE email = $1", [email]);
         if (user.rowCount === 0) return res.status(401).send({ message: "E-mail não cadastrado!" })
 
         const correctPassword = bcrypt.compareSync(password, user.rows[0].password);
