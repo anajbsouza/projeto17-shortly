@@ -8,7 +8,7 @@ export async function shortenUrl(req, res) {
         const shortUrl = nanoid(8);
 
         const result = await db.query(
-            "INSERT INTO short_urls (original_url, short_url, user_id) VALUES ($1, $2, $3) RETURNING id",
+            'INSERT INTO urls (url, "shortUrl", "userId") VALUES ($1, $2, $3) RETURNING id',
             [url, shortUrl, userId]
         );
 
@@ -22,9 +22,9 @@ export async function shortenUrl(req, res) {
 export async function getUrlById(req, res) {
     try {
         const { id } = req.params;
-        const user = await db.query(`SELECT * FROM users WHERE id=$1;`, [id]);
-        if (user.rowCount === 0) return res.sendStatus(404);
-        res.send(user.rows[0]);
+        const urlRecord = await db.query("SELECT * FROM short_urls WHERE id = $1", [id]);
+        if (urlRecord.rowCount === 0) return res.sendStatus(404);
+        res.send(urlRecord.rows[0]);
     } catch (err) {
         res.status(500).send(err.message);
     }
@@ -46,16 +46,15 @@ export async function redirectToUrl(req, res) {
 }
 
 export async function deleteUrl(req, res) {
-
     try {
         const urlId = req.params.id;
-        const userId = res.locals.session.user_id;
-        
+        const userId = res.locals.session.userId; 
+
         const urlResult = await db.query("SELECT * FROM short_urls WHERE id = $1", [urlId]);
         const urlRecord = urlResult.rows[0];
 
-        if (!urlRecord) return res.sendStatus(404); 
-        if (urlRecord.user_id !== userId) return res.sendStatus(401); 
+        if (!urlRecord) return res.sendStatus(404);
+        if (urlRecord.user_id !== userId) return res.sendStatus(401);
         await db.query("DELETE FROM short_urls WHERE id = $1", [urlId]);
 
         res.sendStatus(204);
