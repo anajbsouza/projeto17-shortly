@@ -21,7 +21,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: sessions; Type: TABLE; Schema: public; Owner: anajulia
+-- Name: sessions; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.sessions (
@@ -30,10 +30,8 @@ CREATE TABLE public.sessions (
 );
 
 
-ALTER TABLE public.sessions OWNER TO anajulia;
-
 --
--- Name: short_urls; Type: TABLE; Schema: public; Owner: anajulia
+-- Name: short_urls; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.short_urls (
@@ -45,10 +43,8 @@ CREATE TABLE public.short_urls (
 );
 
 
-ALTER TABLE public.short_urls OWNER TO anajulia;
-
 --
--- Name: short_urls_id_seq; Type: SEQUENCE; Schema: public; Owner: anajulia
+-- Name: short_urls_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.short_urls_id_seq
@@ -60,17 +56,15 @@ CREATE SEQUENCE public.short_urls_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.short_urls_id_seq OWNER TO anajulia;
-
 --
--- Name: short_urls_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: anajulia
+-- Name: short_urls_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.short_urls_id_seq OWNED BY public.short_urls.id;
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: anajulia
+-- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.users (
@@ -82,10 +76,8 @@ CREATE TABLE public.users (
 );
 
 
-ALTER TABLE public.users OWNER TO anajulia;
-
 --
--- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: anajulia
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.users_id_seq
@@ -97,76 +89,68 @@ CREATE SEQUENCE public.users_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.users_id_seq OWNER TO anajulia;
-
 --
--- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: anajulia
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
--- Name: short_urls id; Type: DEFAULT; Schema: public; Owner: anajulia
+-- Name: short_urls id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.short_urls ALTER COLUMN id SET DEFAULT nextval('public.short_urls_id_seq'::regclass);
 
 
 --
--- Name: users id; Type: DEFAULT; Schema: public; Owner: anajulia
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
 
 --
--- Data for Name: sessions; Type: TABLE DATA; Schema: public; Owner: anajulia
+-- Data for Name: sessions; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.sessions (token, userid) FROM stdin;
-76656f1b-eb70-41a4-977b-e728c178460d	1
-3776891f-4b28-4b30-824b-bd0e607e9f9a	1
-277e481d-75bf-47ac-b1ea-9b46455a846e	1
-cffa1b45-9053-41d6-b83e-8a7f3c0ce39d	1
-\.
+INSERT INTO public.sessions VALUES ('76656f1b-eb70-41a4-977b-e728c178460d', 1);
+INSERT INTO public.sessions VALUES ('3776891f-4b28-4b30-824b-bd0e607e9f9a', 1);
+INSERT INTO public.sessions VALUES ('277e481d-75bf-47ac-b1ea-9b46455a846e', 1);
+INSERT INTO public.sessions VALUES ('cffa1b45-9053-41d6-b83e-8a7f3c0ce39d', 1);
 
 
 --
--- Data for Name: short_urls; Type: TABLE DATA; Schema: public; Owner: anajulia
+-- Data for Name: short_urls; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.short_urls (id, original_url, short_url, user_id, visits) FROM stdin;
-1	https://www.npmjs.com/search?q=insertShortenedUrlIntoDB	Hs3T_1GO	\N	0
-2	https://www.npmjs.com/search?q=insertShortenedUrlIntoDB	_SAOsshL	\N	4
-\.
+INSERT INTO public.short_urls VALUES (1, 'https://www.npmjs.com/search?q=insertShortenedUrlIntoDB', 'Hs3T_1GO', NULL, 0);
+INSERT INTO public.short_urls VALUES (2, 'https://www.npmjs.com/search?q=insertShortenedUrlIntoDB', '_SAOsshL', NULL, 4);
 
 
 --
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: anajulia
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.users (id, name, email, password, createdat) FROM stdin;
-1	João	joao@driven.com.br	$2b$10$mgnNC7ExPmSoapTYNn1FZeOOnSJmvG8xCYT2Afh3mgZHofHS2sfaq	2023-08-06 15:45:35.83183-03
-\.
+INSERT INTO public.users VALUES (1, 'João', 'joao@driven.com.br', '$2b$10$mgnNC7ExPmSoapTYNn1FZeOOnSJmvG8xCYT2Afh3mgZHofHS2sfaq', '2023-08-06 15:45:35.83183-03');
 
 
 --
--- Name: short_urls_id_seq; Type: SEQUENCE SET; Schema: public; Owner: anajulia
+-- Name: short_urls_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public.short_urls_id_seq', 2, true);
 
 
 --
--- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: anajulia
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public.users_id_seq', 1, true);
 
 
 --
--- Name: sessions sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: anajulia
+-- Name: sessions sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.sessions
@@ -174,7 +158,7 @@ ALTER TABLE ONLY public.sessions
 
 
 --
--- Name: short_urls short_urls_pkey; Type: CONSTRAINT; Schema: public; Owner: anajulia
+-- Name: short_urls short_urls_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.short_urls
@@ -182,7 +166,7 @@ ALTER TABLE ONLY public.short_urls
 
 
 --
--- Name: short_urls short_urls_short_url_key; Type: CONSTRAINT; Schema: public; Owner: anajulia
+-- Name: short_urls short_urls_short_url_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.short_urls
@@ -190,7 +174,7 @@ ALTER TABLE ONLY public.short_urls
 
 
 --
--- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: anajulia
+-- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.users
@@ -198,7 +182,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: anajulia
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.users
@@ -206,7 +190,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: sessions sessions_userid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: anajulia
+-- Name: sessions sessions_userid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.sessions
@@ -214,7 +198,7 @@ ALTER TABLE ONLY public.sessions
 
 
 --
--- Name: short_urls short_urls_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: anajulia
+-- Name: short_urls short_urls_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.short_urls
