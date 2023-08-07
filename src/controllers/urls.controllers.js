@@ -29,3 +29,19 @@ export async function getUrlById(req, res) {
         res.status(500).send(err.message);
     }
 }
+
+export async function redirectToUrl(req, res) {
+    try {
+        const short_url = req.params.shortUrl;
+        const result = await db.query("SELECT * FROM short_urls WHERE short_url = $1", [short_url]);
+        const urlRecord = result.rows[0];
+
+        if (!urlRecord) return res.status(404).send("URL encurtada não encontrada");
+        const newVisitsCount = (urlRecord.visits || 0) + 1;
+        await db.query("UPDATE short_urls SET visits = $1 WHERE short_url = $2", [newVisitsCount, short_url]);
+        res.redirect(urlRecord.original_url);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+}
+

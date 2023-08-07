@@ -16,3 +16,22 @@ export async function userValidation(req, res, next){
         res.status(500).send(err.message);
     }
 }
+
+export async function deleteUrl(req, res) {
+
+    try {
+        const urlId = req.params.id;
+        const userId = res.locals.session.user_id;
+        
+        const urlResult = await db.query("SELECT * FROM short_urls WHERE id = $1", [urlId]);
+        const urlRecord = urlResult.rows[0];
+
+        if (!urlRecord) return res.sendStatus(404); 
+        if (urlRecord.user_id !== userId) return res.sendStatus(401); 
+        await db.query("DELETE FROM short_urls WHERE id = $1", [urlId]);
+
+        res.sendStatus(204);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+}
