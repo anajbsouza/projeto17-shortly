@@ -1,6 +1,6 @@
 import { db } from "../database/database.connection.js";
 
-export async function userValidation(req, res, next){
+export async function userAuthenticationMiddleware(req, res, next){
     const { authorization } = req.headers;
     const token = authorization?.replace("Bearer ", "");
 

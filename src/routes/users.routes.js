@@ -1,10 +1,10 @@
 import { Router } from "express"
 import { getCurrentUser, getUserRanking } from "../controllers/users.controllers.js"
-import { userValidation } from "../middlewares/userValidation.middleware.js"
+import { userAuthenticationMiddleware } from "../middlewares/userAuthentication.middleware.js"
 
 const userRouter = Router()
 
-userRouter.get("/users/me", userValidation, getCurrentUser)
+userRouter.get("/users/me", userAuthenticationMiddleware, getCurrentUser)
 userRouter.get("/ranking", getUserRanking)
 
 export default userRouter;
