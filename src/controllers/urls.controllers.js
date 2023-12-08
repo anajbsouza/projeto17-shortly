@@ -8,7 +8,7 @@ export async function shortenUrl(req, res) {
         const shortUrl = nanoid(8);
 
         const result = await db.query(
-            'INSERT INTO urls (url, "shortUrl", "userId") VALUES ($1, $2, $3) RETURNING id',
+            'INSERT INTO short_urls (original_url, short_url, user_id) VALUES ($1, $2, $3) RETURNING id',
             [url, shortUrl, userId]
         );
 
