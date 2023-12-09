@@ -2,7 +2,6 @@ import { authRepository } from "../repositories/auth.repository.js";
 import { usersRepository } from "../repositories/users.repository.js";
 
 async function signup(email) {
-
     try {
         const user = await usersRepository.getUserByEmail(email)
         if (user.rowCount !== 0) return res.status(409).send("E-mail já cadastrado");
