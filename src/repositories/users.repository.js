@@ -1,4 +1,4 @@
-import { db } from "../database/db.connection.js"
+import { db } from "../database/database.connection.js"
 
 function getUserByEmail(email) {
     return db.query(`SELECT * FROM users WHERE email=$1;`, [email])

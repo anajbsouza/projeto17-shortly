@@ -1,7 +1,7 @@
-import { authRepository } from "../repositories/auth.repository";
-import { usersRepository } from "../repositories/users.repository";
+import { authRepository } from "../repositories/auth.repository.js";
+import { usersRepository } from "../repositories/users.repository.js";
 
-export async function signup(email) {
+async function signup(email) {
 
     try {
         const user = await usersRepository.getUserByEmail(email)
@@ -12,7 +12,7 @@ export async function signup(email) {
     }
 }
 
-export async function login(email, password) {
+async function login(email, password) {
     try {
         const user = await usersRepository.getUserByEmail(email);
         if (user.rowCount === 0) return res.status(401).send("E-mail não cadastrado!")
@@ -27,4 +27,8 @@ export async function login(email, password) {
     } catch(err) {
         res.status(500).send(err.message);
     }
+}
+
+export const authService = {
+    signup, login
 }
