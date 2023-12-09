@@ -1,12 +1,17 @@
 import { db } from "../database/database.connection"
 
-export function createSessionDB(userId, token) {
+function createSession(userId, token) {
     return db.query(
         `INSERT INTO sessions ("userId", token) VALUES ($1, $2);`,
         [userId, token]
     )
 }
 
-export function findSessionDB(token) {
+function findSession(token) {
     return db.query(`SELECT "userId" FROM sessions WHERE token=$1;`, [token])
+}
+
+export const authRepository = {
+    createSession,
+    findSession
 }

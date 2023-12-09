@@ -1,10 +1,10 @@
 import { db } from "../database/db.connection.js"
 
-export function getUserByEmail(email) {
+function getUserByEmail(email) {
     return db.query(`SELECT * FROM users WHERE email=$1;`, [email])
 }
 
-export function getCompleteUser(userId) {
+function getCompleteUser(userId) {
     return db.query(`
         SELECT users.id, users.name, SUM(urls."visitCount") AS "visitCount", 
                 JSON_AGG(
@@ -18,7 +18,7 @@ export function getCompleteUser(userId) {
     )
 }
 
-export function getRanking() {
+function getRanking() {
     return db.query(`
         SELECT users.id, users.name, COUNT(urls.id) "linksCount", COALESCE(SUM(urls."visitCount"), 0) AS "visitCount"
             FROM users 
@@ -29,9 +29,16 @@ export function getRanking() {
     `)
 }
 
-export function createUser(name, email, password) {
+function createUser(name, email, password) {
     return db.query(
         `INSERT INTO users (name, email, password) VALUES ($1, $2, $3);`,
         [name, email, password]
     )
+}
+
+export const usersRepository = {
+    getUserByEmail,
+    getCompleteUser,
+    getRanking,
+    createUser
 }
