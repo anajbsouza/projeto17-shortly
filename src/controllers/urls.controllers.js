@@ -1,13 +1,10 @@
-import { nanoid } from 'nanoid';
 import { urlsServices } from '../services/urls.services.js';
 
 export async function shortenUrl(req, res) {
     const { url } = req.body;
-    const userId = res.locals.session.userId;
-    const shortUrl = nanoid(8);
-    
-    res.status(201).send(url, userId, shortUrl);
-    
+    const { userId } = res.locals;
+    const result = await urlsServices.shortenUrl(url, userId);
+    res.status(result.status).send(result.data);
 }
 
 export async function getUrlById(req, res) {
@@ -18,11 +15,13 @@ export async function getUrlById(req, res) {
 
 export async function redirectToUrl(req, res) {
     const { shortUrl } = req.params;
-    await urlsServices.redirectToUrl(shortUrl);
+    const url = await urlsServices.redirectToUrl(shortUrl);
+    return res.redirect(url);
 }
 
 export async function deleteUrl(req, res) {
     const { urlId } = req.params;
     const { userId } = res.locals;
-    await urlsServices.deleteUrl(urlId, userId, res);
+    await urlsServices.deleteUrl(urlId, userId);
+    return res.sendStatus(204);
 }

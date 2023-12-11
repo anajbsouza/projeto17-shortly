@@ -1,4 +1,3 @@
-import { db } from "../database/database.connection.js"; 
 import { usersService } from "../services/users.services.js";
 
 export async function getCurrentUser(req, res) {

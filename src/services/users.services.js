@@ -1,21 +1,14 @@
+import { errors } from "../errors/errors.js";
 import { usersRepository } from "../repositories/users.repository.js";
 
 async function getCurrentUser(userId) {
-    try {
-        const user = usersRepository.getCompleteUser(userId);
-        if (!user.userId) return res.sendStatus(401);
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
+    const user = usersRepository.getCompleteUser(userId);
+    if (!user.userId) throw errors.unauthorizedError();
 }
 
 async function getUserRanking() {
-    try {
-        const ranking = await usersService.getUserRanking()
-        res.send(ranking);
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
+    const ranking = await usersService.getUserRanking()
+    return ranking;
 }
 
 export const usersService = {
