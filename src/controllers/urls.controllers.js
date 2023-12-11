@@ -4,7 +4,7 @@ export async function shortenUrl(req, res) {
     const { url } = req.body;
     const { userId } = res.locals;
     const result = await urlsServices.shortenUrl(url, userId);
-    res.status(result.status).send(result.data);
+    res.status(201).send(result.data);
 }
 
 export async function getUrlById(req, res) {
